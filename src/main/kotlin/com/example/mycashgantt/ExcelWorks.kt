@@ -54,9 +54,18 @@ fun writeExcelFile(fileName: String, dataList: List<Item>) {
             row.createCell(2).setCellValue(item.startDate)
             row.createCell(3).setCellValue(item.endDate)
 
+            val counter = item.costMonths.map { it.toCounter(it) }
+            val intialMonthorder = row.lastCellNum.toInt()
+            item.costMonths.forEachIndexed { index, customMonth ->
+                row.createCell(intialMonthorder+counter.get(index)).setCellValue(customMonth.name)
+            }
+
+/*
             item.costMonths.forEachIndexed { index, month ->
+                month.toCounter(month)
                 row.createCell(row.lastCellNum.toInt()).setCellValue(month.name)
             }
+*/
         }
         // close file inputstream before using fileoutput stream
         fileInputStream.close()
@@ -68,8 +77,6 @@ fun writeExcelFile(fileName: String, dataList: List<Item>) {
     } catch (e: java.lang.Exception) {
         e.printStackTrace()
     }
-//    out.flush()
-//    workbook.close()
 }
 
 
