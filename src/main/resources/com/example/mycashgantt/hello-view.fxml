@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+
+
+<AnchorPane prefHeight="415.0" prefWidth="975.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mycashgantt.HelloController">
+    <children>
+        <TreeTableView editable="true" layoutX="441.0" prefHeight="200.0" prefWidth="674.0">
+            <columns>
+                <TreeTableColumn prefWidth="75.0" text="Jan" />
+                <TreeTableColumn prefWidth="75.0" text="Feb" />
+                <TreeTableColumn prefWidth="75.0" text="Mar" />
+                <TreeTableColumn prefWidth="75.0" text="Apr" />
+                <TreeTableColumn prefWidth="75.0" text="May" />
+                <TreeTableColumn prefWidth="75.0" text="Jun" />
+                <TreeTableColumn prefWidth="75.0" text="Jul" />
+                <TreeTableColumn prefWidth="75.0" text="Aug" />
+                <TreeTableColumn prefWidth="75.0" text="Sep" />
+                <TreeTableColumn prefWidth="75.0" text="Oct" />
+                <TreeTableColumn prefWidth="75.0" text="Nov" />
+                <TreeTableColumn prefWidth="75.0" text="Dec" />
+            </columns>
+            <columnResizePolicy>
+                <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TreeTableView>
+        <VBox alignment="CENTER" layoutX="14.0" layoutY="18.0" prefHeight="407.0" prefWidth="315.0" spacing="10.0">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+            <children>
+                <Label text="Item Name" />
+                <TextField fx:id="itemName" prefHeight="11.0" prefWidth="50.0" />
+                <Label text="Price" />
+                <TextField fx:id="price" prefHeight="11.0" prefWidth="50.0" />
+                <VBox prefHeight="50.0" prefWidth="100.0">
+                    <children>
+                        <HBox prefHeight="50.0" prefWidth="200.0">
+                            <children>
+                                <Label text="Start Date : " />
+                                <DatePicker fx:id="startDate" prefHeight="31.0" prefWidth="166.0" />
+                            </children>
+                        </HBox>
+                        <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <Label text="End Date  : " />
+                                <DatePicker fx:id="endDate" prefHeight="31.0" prefWidth="166.0" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+                <GridPane fx:id="selectedMonth">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <CheckBox fx:id="Jan" mnemonicParsing="false" text="Jan" />
+                        <CheckBox fx:id="Apr" mnemonicParsing="false" text="Apr" GridPane.columnIndex="1" />
+                        <CheckBox fx:id="Feb" mnemonicParsing="false" text="Feb" GridPane.rowIndex="1" />
+                        <CheckBox fx:id="May" mnemonicParsing="false" text="May" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <CheckBox fx:id="Mar" mnemonicParsing="false" text="Mar" GridPane.rowIndex="2" />
+                        <CheckBox fx:id="Jun" mnemonicParsing="false" text="Jun" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <CheckBox fx:id="Jul" mnemonicParsing="false" text="Jul" GridPane.columnIndex="2" />
+                        <CheckBox fx:id="Aug" mnemonicParsing="false" text="Aug" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <CheckBox fx:id="Sep" mnemonicParsing="false" text="Sep" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <CheckBox fx:id="Oct" mnemonicParsing="false" text="Oct" GridPane.columnIndex="3" />
+                        <CheckBox fx:id="Nov" mnemonicParsing="false" text="Nov" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <CheckBox fx:id="Dec" mnemonicParsing="false" text="Dec" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                    </children>
+                </GridPane>
+                <Button fx:id="addItemButton" onAction="#onAddBtnClicked" text="Add Item" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
