@@ -5,7 +5,9 @@ import javafx.fxml.FXML
 import javafx.scene.control.*
 import javafx.scene.control.Alert.AlertType
 import javafx.scene.layout.GridPane
+import java.io.FileInputStream
 
+import org.apache.poi.ss.usermodel.*
 
 class HelloController {
     @FXML
@@ -69,6 +71,8 @@ class HelloController {
         val item = getItem(selectedMonthList)
 
         showDataEntered(item)
+//        readExcel()
+        writeExcelFile(FILE_PATH, listOf( item))
     }
 
     private fun showDataEntered(item: Item) {
