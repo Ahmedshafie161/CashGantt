@@ -57,15 +57,15 @@ fun writeExcelFile(fileName: String, dataList: List<Item>) {
             val counter = item.costMonths.map { it.toCounter(it) }
             val intialMonthorder = row.lastCellNum.toInt()
             item.costMonths.forEachIndexed { index, customMonth ->
-                row.createCell(intialMonthorder+counter.get(index)).setCellValue(customMonth.name)
+                row.createCell(intialMonthorder + counter.get(index)).setCellValue(customMonth.name)
             }
 
-/*
-            item.costMonths.forEachIndexed { index, month ->
-                month.toCounter(month)
-                row.createCell(row.lastCellNum.toInt()).setCellValue(month.name)
-            }
-*/
+            /*
+                        item.costMonths.forEachIndexed { index, month ->
+                            month.toCounter(month)
+                            row.createCell(row.lastCellNum.toInt()).setCellValue(month.name)
+                        }
+            */
         }
         // close file inputstream before using fileoutput stream
         fileInputStream.close()
