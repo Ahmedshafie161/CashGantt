@@ -51,17 +51,13 @@ fun writeExcelFile(fileName: String, dataList: List<Item>) {
             // saving item pojo
             row.createCell(0).setCellValue(item.name)
             row.createCell(1).setCellValue(item.price)
-
-            // dates
             row.createCell(2).setCellValue(item.startDate)
             row.createCell(3).setCellValue(item.endDate)
 
-            // spacing months
             val counter = item.costMonths.map { it.toCounter(it) }
-            val intialMonthOrder = row.lastCellNum.toInt() + (item.startDate.year - 2023)*12
+            val intialMonthorder = row.lastCellNum.toInt()
             item.costMonths.forEachIndexed { index, customMonth ->
-                row.createCell(intialMonthOrder + counter.get(index))
-                    .setCellValue(customMonth.name + item.startDate.year.toString())
+                row.createCell(intialMonthorder + counter.get(index)).setCellValue(customMonth.name)
             }
 
             /*
