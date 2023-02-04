@@ -1,10 +1,15 @@
 package com.example.mycashgantt
 
+import kotlinx.coroutines.flow.MutableSharedFlow
 import org.apache.poi.ss.usermodel.CellType
+import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import java.io.FileInputStream
 import java.io.FileOutputStream
+
+//val sharedFlow = MutableSharedFlow<String>()
+val sharedFlow = MutableSharedFlow<String?>()
 
 public fun readExcel(): List<List<Any>> {
     val file = FileInputStream(FILE_PATH)
@@ -42,45 +47,69 @@ fun writeExcelFile(fileName: String, dataList: List<Item>) {
         val fileInputStream = FileInputStream(fileName)
         workbook = WorkbookFactory.create(fileInputStream)
 
-        val sheet = workbook.getSheetAt(0)
-        var lastRow = sheet.lastRowNum
 
 
-        for (item in dataList) {
-            val row = sheet.createRow(++lastRow)
-            // saving item pojo
-            row.createCell(0).setCellValue(item.name)
-            row.createCell(1).setCellValue(item.price)
-
-            // dates
-            row.createCell(2).setCellValue(item.startDate)
-            row.createCell(3).setCellValue(item.endDate)
-
-            // spacing months
-            val counter = item.costMonths.map { it.toCounter(it) }
-            val intialMonthOrder = row.lastCellNum.toInt() + (item.startDate.year - 2023)*12
-            item.costMonths.forEachIndexed { index, customMonth ->
-                row.createCell(intialMonthOrder + counter.get(index))
-                    .setCellValue(customMonth.name + item.startDate.year.toString())
-            }
-
-            /*
-                        item.costMonths.forEachIndexed { index, month ->
-                            month.toCounter(month)
-                            row.createCell(row.lastCellNum.toInt()).setCellValue(month.name)
-                        }
-            */
-        }
-        // close file inputstream before using fileoutput stream
+        saveDataInExcel(dataList, workbook)
         fileInputStream.close()
         val out = FileOutputStream(fileName)
         workbook.write(out)
         out.close()
         workbook.close()
+
         println("excel succedded succsseefully")
     } catch (e: java.lang.Exception) {
         e.printStackTrace()
     }
+}
+
+private fun saveDataInExcel(
+    dataList: List<Item>,
+    workbook: Workbook
+) {
+    for (item in dataList) {
+        val sheet = workbook.getSheetAt(0)
+        var lastRow = sheet.lastRowNum
+        val row = sheet.createRow(++lastRow)
+        // saving item pojo
+        row.createCell(0).setCellValue(item.name)
+        row.createCell(1).setCellValue(item.price)
+
+        // dates
+        row.createCell(2).setCellValue("${item.startDate.year} ${item.startDate.month} ${item.startDate.dayOfMonth}")
+        row.createCell(3).setCellValue("${item.endDate.year} ${item.endDate.month} ${item.endDate.dayOfMonth}")
+
+        // spacing months
+        val counter = item.costMonths.map { it.toCounter(it) }
+        val intialMonthOrder = row.lastCellNum.toInt() + (item.startDate.year - 2023) * 12
+        item.costMonths.forEachIndexed { index, customMonth ->
+            val cellOrder = intialMonthOrder + counter.get(index)
+            row.createCell(cellOrder)
+                .setCellValue(item.price)
+            // set value for date header
+            sheet.getRow(sheet.firstRowNum).createCell(cellOrder)
+                .setCellValue(item.startDate.year.toString() + " " + customMonth.name)
+            // add sum
+            addSumToExcel(sheet, cellOrder)
+        }
+
+
+        /*
+                            item.costMonths.forEachIndexed { index, month ->
+                                month.toCounter(month)
+                                row.createCell(row.lastCellNum.toInt()).setCellValue(month.name)
+                            }
+                */
+    }
+}
+
+private fun addSumToExcel(sheet: Sheet, cellOrder: Int) {
+    var sum = 0.0
+    for (i in sheet.firstRowNum + 2..sheet.lastRowNum) {
+        if (sheet.getRow(i).getCell(cellOrder) != null) {
+            sum += sheet.getRow(i).getCell(cellOrder).numericCellValue
+        }
+    }
+    sheet.getRow(1).createCell(cellOrder).setCellValue(sum)
 }
 
 
