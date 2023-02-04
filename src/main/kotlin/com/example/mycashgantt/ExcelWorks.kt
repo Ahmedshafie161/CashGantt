@@ -89,7 +89,8 @@ private fun saveDataInExcel(
             sheet.getRow(sheet.firstRowNum).createCell(cellOrder)
                 .setCellValue(item.startDate.year.toString() + " " + customMonth.name)
             // add sum
-            addSumToExcel(sheet, cellOrder)
+            addSumCulumnToExcel(sheet, cellOrder)
+            addAccumSumRowToExcel(sheet)
         }
 
 
@@ -102,15 +103,30 @@ private fun saveDataInExcel(
     }
 }
 
-private fun addSumToExcel(sheet: Sheet, cellOrder: Int) {
+private fun addSumCulumnToExcel(sheet: Sheet, cellOrder: Int) {
     var sum = 0.0
-    for (i in sheet.firstRowNum + 2..sheet.lastRowNum) {
+    for (i in sheet.firstRowNum + 3..sheet.lastRowNum) {
         if (sheet.getRow(i).getCell(cellOrder) != null) {
             sum += sheet.getRow(i).getCell(cellOrder).numericCellValue
         }
     }
-    sheet.getRow(1).createCell(cellOrder).setCellValue(sum)
+    sheet.getRow(2).createCell(cellOrder).setCellValue(sum)
 }
+
+private fun addAccumSumRowToExcel(sheet: Sheet) {
+    var sum = 0.0
+    val acummSumRowIndex = sheet.firstRowNum + 2
+    for (i in 4..sheet.getRow(acummSumRowIndex).lastCellNum) {
+        if (sheet.getRow(acummSumRowIndex).getCell(i) != null) {
+            sum += sheet.getRow(acummSumRowIndex).getCell(i).numericCellValue
+            if (sheet.getRow(acummSumRowIndex).getCell(i - 1) != null)
+                sum += sheet.getRow(1).getCell(i - 1).numericCellValue
+        }
+        sheet.getRow(1).createCell(i).setCellValue(sum)
+        sum = 0.0
+    }
+}
+
 
 
 
